@@ -38,6 +38,9 @@
   --serif: Cormorant, Georgia, serif;
   --safe-top: max(env(safe-area-inset-top, 0px), var(--tg-content-safe-area-inset-top, 0px));
   --safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--tg-content-safe-area-inset-bottom, 0px));
+  --tabbar-padding: 7px;
+  --tabbar-button-height: 51px;
+  scroll-padding-bottom: calc(var(--tabbar-button-height) + 2 * var(--tabbar-padding) + var(--safe-bottom) + 8px);
   font: 15px/1.5 Inter, system-ui, sans-serif;
   background: var(--paper);
   color: var(--ink);
@@ -226,7 +229,7 @@ main {
   gap: clamp(4px, 2vw, 22px);
   width: 100%;
   margin-inline: auto;
-  padding: 7px 12px calc(7px + var(--safe-bottom));
+  padding: var(--tabbar-padding) 12px calc(var(--tabbar-padding) + var(--safe-bottom));
   background: linear-gradient(115deg, var(--dark), var(--wine));
   color: #f5e6d5;
 }
@@ -235,7 +238,7 @@ main {
   grid-template-rows: 25px auto;
   place-items: center;
   width: min(31%, 162px);
-  min-height: 51px;
+  min-height: var(--tabbar-button-height);
   padding: 4px 6px;
   border: 0;
   border-radius: 10px;

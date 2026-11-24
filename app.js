@@ -9,7 +9,7 @@ const wave = [9, 15, 22, 33, 26, 13, 20, 31, 39, 29, 17, 24, 35, 24, 18, 11, 21,
 const storageKey = "english-listening-progress-v1";
 const screen = document.querySelector("#screen");
 const audio = document.querySelector("#recording");
-const telegram = window.Telegram?.WebApp;
+let telegram;
 let progress = loadProgress();
 let level = levels.some(item => item.id === progress.level) ? progress.level : levels[0].id;
 let view = "home";
@@ -388,8 +388,18 @@ window.addEventListener("storage", event => {
   else render();
 });
 
-telegram?.ready();
-telegram?.expand();
-telegram?.BackButton?.onClick(() => navigate(view === "round" ? "lessons" : "home"));
+function connectTelegram() {
+  const webApp = window.Telegram?.WebApp;
+  if (!webApp || telegram) return;
+
+  telegram = webApp;
+  telegram.BackButton?.onClick(() => navigate(view === "round" ? "lessons" : "home"));
+  updateTabs();
+  telegram.ready();
+  telegram.expand();
+}
+
+document.querySelector("#telegram-sdk").addEventListener("load", connectTelegram, { once: true });
 render();
+connectTelegram();
 

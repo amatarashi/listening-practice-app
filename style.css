@@ -290,6 +290,7 @@ main {
 .player-error { margin-top: 10px; }
 .quiz { margin-top: 23px; }
 .quiz-title { margin: 11px 0 15px; font-size: clamp(1.75rem, 6vw, 2.8rem); line-height: 1.05; }
+.quiz-title:focus { outline: none; }
 .segments { display: flex; gap: 6px; margin: 9px 0 17px; }
 .segments span { width: 100%; height: 4px; border-radius: 3px; background: var(--line); }
 .segments .filled { background: var(--wine); }

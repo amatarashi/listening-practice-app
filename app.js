@@ -87,6 +87,25 @@ function navigate(next) {
   render(true);
 }
 
+function savedStory(lesson) {
+  if (lesson.parts.length < 2) return null;
+  const saved = progress.stories?.[lesson.id];
+  const scores = saved?.scores;
+  if (!Array.isArray(scores) || !scores.length || scores.length > lesson.parts.length ||
+      scores.some((score, index) => !Number.isInteger(score) || score < 0 || score > lesson.parts[index].questions.length)) {
+    return null;
+  }
+  return saved;
+}
+
+function saveStory() {
+  const { lesson, storyScores, day } = round;
+  const saved = savedStory(lesson);
+  if (saved && saved.scores.length > storyScores.length) return;
+  (progress.stories ??= {})[lesson.id] = { scores: [...storyScores], day };
+  storeProgress();
+}
+
 function currentPart() {
   return round.lesson.parts[round.partIndex];
 }
@@ -103,8 +122,23 @@ function loadPart() {
 
 function openLesson(lesson, daily = false) {
   selectLevel(lesson.level);
-  round = { lesson, daily, day: dateKey(), partIndex: 0, storyCorrect: 0, earned: 0, finished: false };
+  const saved = savedStory(lesson);
+  const storyScores = saved ? [...saved.scores] : [];
+  const day = daily ? dateKey() : Number.isInteger(saved?.day) ? saved.day : null;
+  round = {
+    lesson,
+    daily: day !== null,
+    day,
+    partIndex: storyScores.length,
+    storyScores,
+    earned: 0,
+    finished: false,
+  };
   view = "round";
+  if (storyScores.length === lesson.parts.length) {
+    finish();
+    return;
+  }
   loadPart();
 }
 
@@ -112,6 +146,7 @@ function home() {
   const daily = dailyLesson();
   const today = progress.daily[dateKey()] ?? [];
   const completedToday = today.includes(daily.id) || (level === "A1–A2" && today.includes(level));
+  const dailyLabel = savedStory(daily) ? 'Продолжить' : completedToday ? 'Повторить' : 'Начать';
   return [
     '<section class="hero">',
     '<div><p class="eyebrow">Английский на слух</p>',
@@ -128,7 +163,7 @@ function home() {
     '<section class="daily" aria-labelledby="daily"><div><h3 id="daily">Задание дня</h3>',
     '<p class="small">' + level + ' · <span lang="en">' + daily.title + '</span></p></div>',
     '<button type="button" class="button" data-action="daily">' +
-      (completedToday ? 'Повторить' : 'Начать') + ' <span aria-hidden="true">→</span></button></section>',
+      dailyLabel + ' <span aria-hidden="true">→</span></button></section>',
   ].join("");
 }
 
@@ -142,8 +177,13 @@ function catalog() {
     '</div><div class="lesson-list">',
     ...levelLessons().map(lesson => {
       const best = progress.best[lesson.id];
+      const saved = savedStory(lesson);
       const content = lesson.parts.length > 1 ? lesson.parts.length + ' частей · 3–4 мин' : lesson.questionCount + ' вопроса';
-      const label = best === undefined ? content : 'Лучший: ' + best + '/' + lesson.questionCount;
+      let label = best === undefined ? content : 'Лучший: ' + best + '/' + lesson.questionCount;
+      if (saved) {
+        label = saved.scores.length === lesson.parts.length ? 'К результату' :
+          'Продолжить · часть ' + (saved.scores.length + 1);
+      }
       return '<button type="button" class="lesson-row" data-action="lesson" data-id="' + lesson.id + '">' +
         '<div><h3 lang="en">' + lesson.title + '</h3><p class="description">' + lesson.description + '</p></div>' +
         '<div class="row-meta"><span class="small">' + label +
@@ -381,9 +421,10 @@ async function playAudio(restart = false) {
 function finish() {
   if (round.finished) return;
   const { lesson, day, daily } = round;
-  const correct = lesson.parts.length > 1 ? round.storyCorrect : countCorrect();
+  const correct = lesson.parts.length > 1 ? round.storyScores.reduce((total, score) => total + score, 0) : countCorrect();
   const prior = progress.best[lesson.id] ?? 0;
   progress.best[lesson.id] = Math.max(prior, correct);
+  if (progress.stories) delete progress.stories[lesson.id];
   const today = dateKey();
   if (!progress.days.includes(today)) progress.days.push(today);
   if (daily && day === today) {
@@ -461,7 +502,8 @@ screen.addEventListener("submit", event => {
   round.answers = currentPart().questions.map((_, index) => Number(choices.get("answer-" + index)));
   round.checked = true;
   const correct = countCorrect();
-  round.storyCorrect += correct;
+  round.storyScores.push(correct);
+  saveStory();
   telegram?.HapticFeedback?.notificationOccurred(correct === currentPart().questions.length ? "success" : "error");
   refreshQuiz(".story-result");
 });

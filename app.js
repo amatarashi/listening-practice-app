@@ -1,9 +1,17 @@
-import { lessons } from "./lessons.js";
+import { lessons as content } from "./lessons.js?v=4";
+
+const lessons = content.map(lesson => {
+  const parts = lesson.parts ?? [{ audio: lesson.id, transcript: lesson.transcript, questions: lesson.questions }];
+  return {
+    ...lesson,
+    parts,
+    questionCount: parts.reduce((total, part) => total + part.questions.length, 0),
+  };
+});
 
 const levels = [
   { id: "A1–A2", detail: "Простые ситуации" },
-  { id: "B1", detail: "Повседневные истории" },
-  { id: "B2", detail: "Нюансы и выводы" },
+  { id: "B1", detail: "Истории по частям" },
 ];
 const wave = [9, 15, 22, 33, 26, 13, 20, 31, 39, 29, 17, 24, 35, 24, 18, 11, 21, 34, 41, 23, 18, 30, 38, 27, 11, 21, 33, 22, 16, 9, 17, 26, 35, 21, 14, 24, 31, 19, 11, 8];
 const storageKey = "english-listening-progress-v1";
@@ -51,7 +59,10 @@ function currentStreak() {
 }
 
 function score() {
-  return lessons.reduce((total, lesson) => total + 10 * (progress.best[lesson.id] || 0), 0);
+  // Keep XP from earlier versions, including exercises that have left the catalog.
+  return Object.values(progress.best).reduce((total, best) => {
+    return Number.isSafeInteger(best) && best > 0 ? total + 10 * best : total;
+  }, 0);
 }
 
 function levelLessons() {
@@ -76,26 +87,40 @@ function navigate(next) {
   render(true);
 }
 
+function currentPart() {
+  return round.lesson.parts[round.partIndex];
+}
+
+function loadPart() {
+  round.index = 0;
+  round.answers = [];
+  round.started = false;
+  round.unlocked = false;
+  round.checked = false;
+  audio.src = "./assets/audio/" + currentPart().audio + ".mp3";
+  render(true);
+}
+
 function openLesson(lesson, daily = false) {
   selectLevel(lesson.level);
-  round = { lesson, daily, day: dateKey(), index: 0, answers: [], unlocked: false, earned: 0, finished: false };
+  round = { lesson, daily, day: dateKey(), partIndex: 0, storyCorrect: 0, earned: 0, finished: false };
   view = "round";
-  audio.src = "./assets/audio/" + lesson.id + ".mp3";
-  render(true);
+  loadPart();
 }
 
 function home() {
   const daily = dailyLesson();
-  const completedToday = progress.daily[dateKey()]?.includes(level);
+  const today = progress.daily[dateKey()] ?? [];
+  const completedToday = today.includes(daily.id) || (level === "A1–A2" && today.includes(level));
   return [
     '<section class="hero">',
     '<div><p class="eyebrow">Английский на слух</p>',
     '<h1 tabindex="-1" lang="en">Listening<br><em>Practice</em></h1>',
-    '<p class="lede">Короткие истории на английском и три вопроса после каждой записи.</p></div>',
+    '<p class="lede">Короткие тренировки A1–A2 и истории по частям для B1.</p></div>',
     '<figure class="photo"><img src="./assets/london.jpg" alt="" fetchpriority="high">',
     '<figcaption lang="en">London after dark</figcaption></figure>',
     '</section><section class="section" aria-labelledby="choose">',
-    '<div class="section-head"><h2 id="choose">Выбери уровень</h2><span class="small">9 тренировок</span></div>',
+    '<div class="section-head"><h2 id="choose">Выбери уровень</h2><span class="small">' + lessons.length + ' тренировок</span></div>',
     '<div class="levels">',
     ...levels.map(item => '<button type="button" class="level" data-action="level" data-level="' + item.id + '">' +
       '<strong>' + item.id + '</strong><small>' + item.detail + '</small><span class="arrow" aria-hidden="true">→</span></button>'),
@@ -110,16 +135,18 @@ function home() {
 function catalog() {
   return [
     '<section class="page-narrow">',
-    '<p class="eyebrow">Уровни A1–B2</p><h1 tabindex="-1">Практика</h1>',
+    '<p class="eyebrow">Уровни A1–B1</p><h1 tabindex="-1">Практика</h1>',
     '<div class="level-strip" role="group" aria-label="Уровень английского">',
     ...levels.map(item => '<button type="button" class="quiet" data-action="level" data-level="' + item.id +
       '" aria-pressed="' + (level === item.id) + '">' + item.id + '</button>'),
     '</div><div class="lesson-list">',
     ...levelLessons().map(lesson => {
       const best = progress.best[lesson.id];
+      const content = lesson.parts.length > 1 ? lesson.parts.length + ' частей · 3–4 мин' : lesson.questionCount + ' вопроса';
+      const label = best === undefined ? content : 'Лучший: ' + best + '/' + lesson.questionCount;
       return '<button type="button" class="lesson-row" data-action="lesson" data-id="' + lesson.id + '">' +
         '<div><h3 lang="en">' + lesson.title + '</h3><p class="description">' + lesson.description + '</p></div>' +
-        '<div class="row-meta"><span class="small">' + (best === undefined ? '3 вопроса' : 'Лучший: ' + best + '/3') +
+        '<div class="row-meta"><span class="small">' + label +
         '</span><span class="arrow" aria-hidden="true">→</span></div></button>';
     }),
     '</div></section>',
@@ -145,16 +172,19 @@ function quiz() {
   }
   if (!round.started) return '<button type="button" class="button wide" data-action="start-quiz">К вопросам <span aria-hidden="true">→</span></button>';
 
-  const question = lesson.questions[index];
+  if (lesson.parts.length > 1) return storyQuiz();
+
+  const { questions } = currentPart();
+  const question = questions[index];
   const selected = answers[index];
   const answered = selected !== undefined;
   const correct = selected === question.answer;
 
   return [
-    '<div class="section-head small"><span>Вопрос ' + (index + 1) + ' из ' + lesson.questions.length +
+    '<div class="section-head small"><span>Вопрос ' + (index + 1) + ' из ' + questions.length +
       '</span><span>' + question.type + '</span></div>',
     '<div class="segments" aria-hidden="true">',
-    ...lesson.questions.map((_, step) => '<span' + (step <= index ? ' class="filled"' : '') + '></span>'),
+    ...questions.map((_, step) => '<span' + (step <= index ? ' class="filled"' : '') + '></span>'),
     '</div><h2 tabindex="-1" class="quiz-title" lang="en">' + question.text + '</h2><div class="options">',
     ...question.options.map((option, i) => {
       const state = answered && i === question.answer ? " right" : answered && i === selected ? " wrong" : "";
@@ -162,21 +192,57 @@ function quiz() {
         (answered ? ' disabled' : '') + '><strong aria-hidden="true">' + "ABC"[i] + '</strong>' + option + '</button>';
     }),
     '</div>',
-    answered ? '<div class="feedback' + (correct ? ' good' : '') + '" tabindex="-1">' +
-      '<strong>' + (correct ? 'Верно!' : 'Верный ответ: <span lang="en">' + question.options[question.answer] + '</span>') +
-      '</strong>' + question.explanation + '</div><div class="tight-actions">' +
+    answered ? questionFeedback(question, correct) + '<div class="tight-actions">' +
       (!correct ? '<button type="button" class="quiet" data-action="replay">Переслушать</button>' : '') +
       '<button type="button" class="button" data-action="next">' +
-      (index + 1 === lesson.questions.length ? 'К результату' : 'Следующий вопрос') + '</button></div>' : '',
+      (index + 1 === questions.length ? 'К результату' : 'Следующий вопрос') + '</button></div>' : '',
+  ].join("");
+}
+
+function questionFeedback(question, correct) {
+  const title = correct ? 'Верно!' : 'Верный ответ: <span lang="en">' + question.options[question.answer] + '</span>';
+  return '<div class="feedback' + (correct ? ' good' : '') + '" tabindex="-1"><strong>' +
+    title + '</strong>' + question.explanation + '</div>';
+}
+
+function storyQuiz() {
+  const { questions } = currentPart();
+  const { checked, answers, partIndex, lesson } = round;
+  const finalPart = partIndex + 1 === lesson.parts.length;
+  return [
+    checked ? '<p class="story-result" tabindex="-1">Верно ' + countCorrect() + ' из ' + questions.length + '</p>' :
+      '<h2 class="story-result" tabindex="-1">Вопросы к части</h2><p class="small">Ответы можно менять до проверки.</p>',
+    '<form id="story-answers">',
+    ...questions.map((question, index) => {
+      const selected = answers[index];
+      const correct = selected === question.answer;
+      return '<fieldset class="story-question"' + (checked ? ' disabled' : '') + '>' +
+        '<legend class="quiz-title" lang="en">' + question.text + '</legend><div class="options">' +
+        question.options.map((option, choice) => {
+          const state = checked && choice === question.answer ? ' right' : checked && choice === selected ? ' wrong' : '';
+          return '<label class="option' + state + '" lang="en">' +
+            '<input type="radio" name="answer-' + index + '" value="' + choice + '" required' +
+            (choice === selected ? ' checked' : '') + '><span>' + option + '</span></label>';
+        }).join("") + '</div>' + (checked ? questionFeedback(question, correct) : '') + '</fieldset>';
+    }),
+    checked ? '<div class="tight-actions"><button type="button" class="quiet" data-action="replay">Переслушать</button>' +
+      '<button type="button" class="button" data-action="next-part">' +
+      (finalPart ? 'К результату' : 'Следующая часть') + '</button></div>' :
+      '<button type="submit" class="button wide" disabled>Проверить</button>',
+    '</form>',
   ].join("");
 }
 
 function transcript() {
-  return '<details class="transcript"><summary>Транскрипт</summary><p lang="en">' + round.lesson.transcript + '</p></details>';
+  const { parts } = round.lesson;
+  const text = parts.length === 1 ? '<p lang="en">' + parts[0].transcript + '</p>' :
+    parts.map((part, index) => '<p><strong>Часть ' + (index + 1) + '</strong></p><p lang="en">' +
+      part.transcript + '</p>').join("");
+  return '<details class="transcript"><summary>Транскрипт</summary>' + text + '</details>';
 }
 
 function countCorrect() {
-  return round.answers.filter((answer, i) => answer === round.lesson.questions[i].answer).length;
+  return round.answers.filter((answer, i) => answer === currentPart().questions[i].answer).length;
 }
 
 function metric(value, label) {
@@ -185,28 +251,32 @@ function metric(value, label) {
 
 function result() {
   const todayStreak = currentStreak();
+  const { totalCorrect, lesson } = round;
   return [
     '<p class="eyebrow">Тренировка завершена</p><h1 tabindex="-1">' +
-      (countCorrect() === round.lesson.questions.length ? 'Отлично!' : 'Готово!') + '</h1>',
+      (totalCorrect === lesson.questionCount ? 'Отлично!' : 'Готово!') + '</h1>',
     '<div class="score">',
-    metric(countCorrect() + '/' + round.lesson.questions.length, "верно"),
+    metric(totalCorrect + '/' + lesson.questionCount, "верно"),
     metric('+' + round.earned, "XP"),
     metric(todayStreak, "дней подряд"),
     '</div>',
     round.earned === 0 ? '<p class="small">XP начисляются за улучшение личного результата.</p>' : '',
-    player(), transcript(),
+    lesson.parts.length === 1 ? player() : '', transcript(),
     '<div class="tight-actions"><button type="button" class="quiet" data-action="retry">Пройти ещё раз</button>',
     '<button type="button" class="button" data-action="lessons">К тренировкам</button></div>',
   ].join("");
 }
 
 function lessonScreen() {
+  const { partIndex, lesson } = round;
+  const story = lesson.parts.length > 1;
+  const partProgress = story ? '<p class="small story-part">Часть ' + (partIndex + 1) + ' из ' + lesson.parts.length + '</p>' : '';
   return '<section class="page-narrow"><button type="button" class="quiet back" data-action="lessons">← Практика</button>' +
     (round.finished ? result() : [
       '<p class="eyebrow">' + round.lesson.level + (round.daily ? ' · Задание дня' : '') + '</p>',
       '<h1 tabindex="-1" lang="en">' + round.lesson.title + '</h1>',
       '<p class="lede">' + round.lesson.description + '</p>',
-      player(), '<section class="quiz" id="quiz" aria-label="Вопросы по записи">' + quiz() + '</section>',
+      partProgress, player(), '<section class="quiz" id="quiz" aria-label="Вопросы по записи">' + quiz() + '</section>',
     ].join("")) + '</section>';
 }
 
@@ -311,16 +381,17 @@ async function playAudio(restart = false) {
 function finish() {
   if (round.finished) return;
   const { lesson, day, daily } = round;
-  const correct = countCorrect();
+  const correct = lesson.parts.length > 1 ? round.storyCorrect : countCorrect();
   const prior = progress.best[lesson.id] ?? 0;
   progress.best[lesson.id] = Math.max(prior, correct);
   const today = dateKey();
   if (!progress.days.includes(today)) progress.days.push(today);
   if (daily && day === today) {
     const completed = (progress.daily[day] ??= []);
-    if (!completed.includes(lesson.level)) completed.push(lesson.level);
+    if (!completed.includes(lesson.id)) completed.push(lesson.id);
   }
   round.earned = 10 * Math.max(0, correct - prior);
+  round.totalCorrect = correct;
   round.finished = true;
   audio.pause();
   storeProgress();
@@ -345,26 +416,55 @@ const actions = {
   "start-quiz": () => {
     if (!round.unlocked) return;
     round.started = true;
-    refreshQuiz(".quiz-title");
+    refreshQuiz(round.lesson.parts.length > 1 ? ".story-result" : ".quiz-title");
   },
   answer: button => {
     if (round.answers[round.index] !== undefined) return;
     const option = Number(button.dataset.option);
     round.answers[round.index] = option;
-    const correct = option === round.lesson.questions[round.index].answer;
+    const correct = option === currentPart().questions[round.index].answer;
     telegram?.HapticFeedback?.notificationOccurred(correct ? "success" : "error");
     refreshQuiz(".feedback");
   },
   next: () => {
     if (round.answers[round.index] === undefined) return;
-    if (round.index + 1 === round.lesson.questions.length) {
+    if (round.index + 1 === currentPart().questions.length) {
       finish();
       return;
     }
     round.index += 1;
     refreshQuiz(".quiz-title");
   },
+  "next-part": () => {
+    if (!round.checked) return;
+    if (round.partIndex + 1 === round.lesson.parts.length) {
+      finish();
+      return;
+    }
+    round.partIndex += 1;
+    loadPart();
+  },
 };
+
+screen.addEventListener("change", event => {
+  const form = event.target.closest("#story-answers");
+  if (form) form.querySelector('button[type="submit"]').disabled = !form.checkValidity();
+});
+
+screen.addEventListener("submit", event => {
+  const form = event.target;
+  if (form.id !== "story-answers") return;
+  event.preventDefault();
+  if (round.checked || !form.checkValidity()) return;
+
+  const choices = new FormData(form);
+  round.answers = currentPart().questions.map((_, index) => Number(choices.get("answer-" + index)));
+  round.checked = true;
+  const correct = countCorrect();
+  round.storyCorrect += correct;
+  telegram?.HapticFeedback?.notificationOccurred(correct === currentPart().questions.length ? "success" : "error");
+  refreshQuiz(".story-result");
+});
 
 document.addEventListener("click", event => {
   const button = event.target.closest("button[data-action]");

@@ -132,266 +132,500 @@ export const lessons = [
     ]
   },
   {
-    "id": "rainy-picnic",
+    "id": "rainy-picnic-story",
     "level": "B1",
     "title": "The Rainy Picnic",
-    "description": "Когда меняются планы",
+    "description": "Как друзья спасли субботние планы",
     "voice": "bf_lily",
-    "speed": 0.86,
-    "transcript": "We'd planned a picnic in the park for Saturday, but by lunchtime it was pouring. Instead of cancelling, Maya asked everyone to come to her flat. We spread a blanket on the living room floor and ate the sandwiches we'd already made. It wasn't what anyone had imagined, but on Monday my friends were still talking about it. Now we're thinking of doing it again, even if the weather is fine.",
-    "questions": [
+    "speed": 0.84,
+    "parts": [
       {
-        "type": "Главная мысль",
-        "text": "How did the friends deal with the rain?",
-        "options": [
-          "They moved the picnic indoors.",
-          "They waited in the park.",
-          "They cancelled their plans."
-        ],
-        "answer": 0,
-        "explanation": "Майя позвала друзей к себе, и они устроили пикник на полу."
+        "audio": "rainy-picnic-story-1",
+        "transcript": "On Saturday morning, Maya and her friends planned to meet in the park for a picnic. Maya had already made sandwiches, and Ben was bringing a blanket. The sky looked grey, but the weather app said the rain would arrive in the evening. Just before they left home, Ben called Maya. It was already raining in his part of town, and he had seen lightning. Maya asked everyone to wait for a message before setting off. She still wanted to see her friends, so she looked for another place they could meet.",
+        "questions": [
+          {
+            "text": "Why did Ben call Maya?",
+            "options": [
+              "The sandwiches were missing.",
+              "The storm had already started near him.",
+              "The park was closed."
+            ],
+            "answer": 1,
+            "explanation": "Бен позвонил, потому что у него уже шёл дождь и была видна молния."
+          },
+          {
+            "text": "What did Maya ask the group to do?",
+            "options": [
+              "Wait for a message before leaving.",
+              "Meet an hour earlier.",
+              "Bring their own umbrellas."
+            ],
+            "answer": 0,
+            "explanation": "Майя попросила дождаться сообщения, прежде чем выходить из дома."
+          }
+        ]
       },
       {
-        "type": "Деталь",
-        "text": "What had they prepared before the picnic?",
-        "options": [
-          "A cake",
-          "A hot meal",
-          "Sandwiches"
-        ],
-        "answer": 2,
-        "explanation": "Они съели сэндвичи, которые уже приготовили."
+        "audio": "rainy-picnic-story-2",
+        "transcript": "Maya suggested meeting at a café near the park. It had big tables and was only five minutes away from her flat. She called to ask if there was space. The owner said all the tables were booked because a school group was coming in for lunch. He offered a table after three, but two people in Maya's group had to leave by then. Maya looked around her living room. It was small, but if she moved the coffee table, there would be room for everyone to sit on the floor.",
+        "questions": [
+          {
+            "text": "Why couldn't the group use the café at lunchtime?",
+            "options": [
+              "It had no food left.",
+              "It was too far away.",
+              "Its tables were already booked."
+            ],
+            "answer": 2,
+            "explanation": "В кафе ожидали школьную группу, поэтому свободных столиков на обед не было."
+          },
+          {
+            "text": "What did Maya decide to move?",
+            "options": [
+              "The sofa",
+              "The coffee table",
+              "The chairs from the kitchen"
+            ],
+            "answer": 1,
+            "explanation": "Майя решила сдвинуть журнальный столик, чтобы освободить место на полу."
+          }
+        ]
       },
       {
-        "type": "Вывод",
-        "text": "How did the friends probably feel about the indoor picnic?",
-        "options": [
-          "Disappointed",
-          "Pleased",
-          "Embarrassed"
-        ],
-        "answer": 1,
-        "explanation": "Они обсуждали пикник даже в понедельник и хотят его повторить."
+        "audio": "rainy-picnic-story-3",
+        "transcript": "Maya invited everyone to her flat. Ben arrived first, with the blanket in a large bag. He had wrapped the blanket in a plastic bag, so it was still dry even though his jacket was wet. Nina arrived a few minutes later with a paper box of cakes. One corner of the box was wet, so she worried that the cakes were ruined. When Maya lifted the lid, they saw that only the box was wet. They put the cakes on a plate and spread the blanket in the middle of the room.",
+        "questions": [
+          {
+            "text": "How had Ben kept the blanket dry?",
+            "options": [
+              "He wrapped it in plastic.",
+              "He carried it under his jacket.",
+              "He dried it in Maya’s kitchen."
+            ],
+            "answer": 0,
+            "explanation": "Бен завернул плед в пластиковый пакет перед выходом."
+          },
+          {
+            "text": "What did they discover about the cakes?",
+            "options": [
+              "Only the cakes on top were dry.",
+              "They were dry inside the wet box.",
+              "The cakes had fallen out on the way."
+            ],
+            "answer": 1,
+            "explanation": "Промокла коробка, а сами пирожные остались сухими."
+          }
+        ]
+      },
+      {
+        "audio": "rainy-picnic-story-4",
+        "transcript": "When everyone sat down to eat, Nina asked where Tom was. Nobody had heard from him since that morning. Maya checked her messages and found that she had sent the new address to an old group chat. Tom was no longer in that chat because he had changed his phone number. Ben called him. Tom had reached the park and was waiting under the roof at the entrance. Luckily, Maya's flat was just around the corner. Ben told him to stay there and went to meet him with a large umbrella.",
+        "questions": [
+          {
+            "text": "Why hadn't Tom seen the new address?",
+            "options": [
+              "He had switched off his phone.",
+              "Maya hadn't written the address.",
+              "The message was in a chat he no longer used."
+            ],
+            "answer": 2,
+            "explanation": "Майя написала в старый чат, из которого Том ушёл после смены номера."
+          },
+          {
+            "text": "Where was Tom waiting?",
+            "options": [
+              "At the park entrance",
+              "Outside the café",
+              "At Maya’s front door"
+            ],
+            "answer": 0,
+            "explanation": "Том ждал под крышей у входа в парк."
+          }
+        ]
+      },
+      {
+        "audio": "rainy-picnic-story-5",
+        "transcript": "By the time Ben and Tom got back, the rain was heavier. Tom put his umbrella by the door and handed Maya a small speaker. He had brought it for the picnic in the park. Nina asked everyone to choose one song, but their first choices were so different that they began laughing. Instead of playing the music all afternoon, they turned the choices into a game. Each person played the first few seconds of a song, and the others had to guess who had picked it. Even shy Tom wanted another turn.",
+        "questions": [
+          {
+            "text": "What had Tom brought with him?",
+            "options": [
+              "A board game",
+              "A small speaker",
+              "An extra blanket"
+            ],
+            "answer": 1,
+            "explanation": "Том принёс небольшую колонку, которую собирался использовать в парке."
+          },
+          {
+            "text": "What did they have to guess in the game?",
+            "options": [
+              "Who had chosen the song",
+              "How long the song was",
+              "What year the song came out"
+            ],
+            "answer": 0,
+            "explanation": "Они угадывали, кто из друзей выбрал песню."
+          }
+        ]
+      },
+      {
+        "audio": "rainy-picnic-story-6",
+        "transcript": "The rain finally stopped at four. Maya opened the window and asked whether anyone still wanted to go to the park. Nina looked at the wet grass outside and said she was happy where she was. The others agreed, so they made tea and finished the cakes. Before leaving, Ben suggested having another floor picnic next month, even if the weather was sunny. Maya liked the idea, but she had one condition. Next time, they would use a new group chat so everybody received the invitation. She opened her phone and created it that evening.",
+        "questions": [
+          {
+            "text": "What did the group do after the rain stopped?",
+            "options": [
+              "They went to the park.",
+              "They went to the café.",
+              "They stayed inside and had tea."
+            ],
+            "answer": 2,
+            "explanation": "Когда дождь закончился, друзья остались дома, сделали чай и доели пирожные."
+          },
+          {
+            "text": "Why did Maya create a new group chat?",
+            "options": [
+              "To make sure everyone got the next invitation.",
+              "To send the café a thank-you message.",
+              "To share the weather forecast every week."
+            ],
+            "answer": 0,
+            "explanation": "Майя создала чат, чтобы в следующий раз приглашение получили все."
+          }
+        ]
       }
     ]
   },
   {
-    "id": "bike-commute",
+    "id": "bike-commute-story",
     "level": "B1",
     "title": "A Different Route",
-    "description": "Новая дорога на работу",
+    "description": "Как найти удобную дорогу на работу",
     "voice": "am_puck",
-    "speed": 0.83,
-    "transcript": "Last month, I started cycling to work. At first I followed the same route as the bus, but the traffic made me nervous. Then a colleague showed me a quiet path along the river. It's a little longer, but I arrive in a better mood. I still take the bus when it's raining heavily. The point was to find a way to enjoy the journey, and this works for me.",
-    "questions": [
+    "speed": 0.84,
+    "parts": [
       {
-        "type": "Главная мысль",
-        "text": "What change made cycling more enjoyable?",
-        "options": [
-          "Buying a faster bike",
-          "Taking a quieter route",
-          "Cycling with a colleague"
-        ],
-        "answer": 1,
-        "explanation": "Коллега показал спокойную дорожку вдоль реки."
+        "audio": "bike-commute-story-1",
+        "transcript": "Leo used to catch the bus to work. One Monday he missed it and was about to order a taxi when he saw his bicycle in the hall. He had not ridden it for months, but the tyres were fine. He put his lunch in a backpack and set off along the bus route. At first he enjoyed being outside. Then he reached a busy bridge where cars passed very close to him. He arrived at work on time, but his hands were shaking when he took off his helmet.",
+        "questions": [
+          {
+            "text": "Why did Leo cycle that morning?",
+            "options": [
+              "The bus stop had moved.",
+              "He had missed his bus.",
+              "He was training for a race."
+            ],
+            "answer": 1,
+            "explanation": "Лео сел на велосипед после того, как пропустил автобус."
+          },
+          {
+            "text": "Which part of the ride worried him?",
+            "options": [
+              "The busy bridge",
+              "The road by his house",
+              "The entrance to his office"
+            ],
+            "answer": 0,
+            "explanation": "На загруженном мосту машины проезжали слишком близко."
+          }
+        ]
       },
       {
-        "type": "Деталь",
-        "text": "When does the speaker still take the bus?",
-        "options": [
-          "When running late",
-          "When the riverside path is busy",
-          "When it rains heavily"
-        ],
-        "answer": 2,
-        "explanation": "При сильном дожде говорящий всё ещё ездит на автобусе."
+        "audio": "bike-commute-story-2",
+        "transcript": "At lunch, Leo told his colleague Rachel about the ride. She also cycled to work and knew the area well. She drew another route on a piece of paper. It followed the river instead of going across the busy bridge. Rachel said he would need to walk his bike through a short tunnel because the path there was narrow. Leo looked at the map on his phone and saw that the new route was longer. He decided to leave home fifteen minutes earlier the following day and try it anyway.",
+        "questions": [
+          {
+            "text": "How did Rachel suggest getting to work?",
+            "options": [
+              "Use the busy bridge before traffic starts.",
+              "Cycle along a river path.",
+              "Take the bicycle on the bus."
+            ],
+            "answer": 1,
+            "explanation": "Рейчел предложила маршрут вдоль реки, чтобы объехать загруженный мост."
+          },
+          {
+            "text": "Why would Leo need to walk through the tunnel?",
+            "options": [
+              "The tunnel was narrow.",
+              "His front light didn't work.",
+              "Bikes were too loud inside."
+            ],
+            "answer": 0,
+            "explanation": "Дорожка в тоннеле была узкой, поэтому Рейчел посоветовала пройти пешком."
+          }
+        ]
       },
       {
-        "type": "Вывод",
-        "text": "What matters most to the speaker?",
-        "options": [
-          "Enjoying the journey",
-          "Getting there as fast as possible",
-          "Cycling every day"
-        ],
-        "answer": 0,
-        "explanation": "Говорящий выбирает более длинный, но приятный маршрут."
+        "audio": "bike-commute-story-3",
+        "transcript": "On Tuesday, Leo reached the tunnel without seeing a single car. He got off his bike and walked through it. On the other side, however, the path divided into two. Rachel had said to follow the river, so he took the path closest to the water. Five minutes later it ended at a locked gate. Leo looked again at Rachel's drawing and saw a small arrow he had missed. It pointed to the path on the left. He went back to the fork. This time he passed a café Rachel had drawn on the map.",
+        "questions": [
+          {
+            "text": "How did Leo know his first path was wrong?",
+            "options": [
+              "It took him back to the bridge.",
+              "It ended at a locked gate.",
+              "It became too crowded."
+            ],
+            "answer": 1,
+            "explanation": "Дорожка у воды закончилась запертыми воротами."
+          },
+          {
+            "text": "What helped confirm he was on the right path later?",
+            "options": [
+              "A bridge on Rachel’s map",
+              "A sign with his street name",
+              "A café Rachel had marked"
+            ],
+            "answer": 2,
+            "explanation": "На нужной дорожке Лео увидел кафе, которое Рейчел отметила."
+          }
+        ]
+      },
+      {
+        "audio": "bike-commute-story-4",
+        "transcript": "Leo reached work a little before his usual starting time. The ride had taken longer than the one over the bridge, even without the wrong turn. Still, he felt much calmer. He planned to cycle again on Wednesday, then checked the forecast and saw a warning about heavy rain. He briefly thought about buying a waterproof jacket on the way home. Instead, he decided to take the bus in the morning. His goal was to find a journey he enjoyed. There was no reason to turn it into a rule for every day.",
+        "questions": [
+          {
+            "text": "How did Leo feel when he arrived by the river route?",
+            "options": [
+              "Calmer",
+              "Annoyed with Rachel",
+              "Worried about being late"
+            ],
+            "answer": 0,
+            "explanation": "Хотя дорога заняла больше времени, Лео чувствовал себя спокойнее."
+          },
+          {
+            "text": "Why did Leo plan to take the bus on Wednesday?",
+            "options": [
+              "He wanted to save time on every journey.",
+              "Heavy rain was expected.",
+              "The river path was closed."
+            ],
+            "answer": 1,
+            "explanation": "На среду обещали сильный дождь, поэтому Лео выбрал автобус."
+          }
+        ]
+      },
+      {
+        "audio": "bike-commute-story-5",
+        "transcript": "On Thursday the sky was clear, so Leo tried the river route again. Near the café, he noticed a cyclist trying to fix a loose bicycle chain. Leo stopped. He carried a small cloth but had no tools, so he offered to hold the bike steady while she worked. A few minutes later the chain was back in place. The cyclist thanked him and pointed out a gate beside the café. It led straight to the road by Leo's office. He had been going around the whole building without realising there was a shortcut.",
+        "questions": [
+          {
+            "text": "How did Leo help the other cyclist?",
+            "options": [
+              "He lent her a tool kit.",
+              "He offered her a spare chain.",
+              "He held her bike steady."
+            ],
+            "answer": 2,
+            "explanation": "У Лео не было инструментов, но он придержал велосипед, пока девушка чинила цепь."
+          },
+          {
+            "text": "What did the cyclist show Leo?",
+            "options": [
+              "A place to buy tools",
+              "A shortcut near the café",
+              "A different route through the tunnel"
+            ],
+            "answer": 1,
+            "explanation": "Девушка показала калитку у кафе, через которую можно срезать путь."
+          }
+        ]
+      },
+      {
+        "audio": "bike-commute-story-6",
+        "transcript": "By the end of the month, Leo had settled into a routine. He usually cycled on dry days and took the bus when it rained. The river route was still slightly slower than the busy bridge, even with the shortcut. He preferred it because he could enjoy the ride without watching for cars all the time. One Friday Rachel asked whether he ever went over the bridge now. Leo laughed and said he only crossed it on the bus. Then he gave her an updated map so she could try the shortcut too.",
+        "questions": [
+          {
+            "text": "Why did Leo keep using the river route?",
+            "options": [
+              "He felt more relaxed away from the traffic.",
+              "It was always the fastest way.",
+              "He wanted to avoid taking the bus entirely."
+            ],
+            "answer": 0,
+            "explanation": "Вдали от машин поездка была спокойнее и приятнее."
+          },
+          {
+            "text": "What did Leo give Rachel?",
+            "options": [
+              "A bus ticket",
+              "A new bicycle light",
+              "An updated map"
+            ],
+            "answer": 2,
+            "explanation": "Лео отдал Рейчел обновлённую карту с коротким проходом."
+          }
+        ]
       }
     ]
   },
   {
-    "id": "community-garden",
+    "id": "community-garden-story",
     "level": "B1",
     "title": "The Empty Lot",
-    "description": "Сад по соседству",
+    "description": "Как соседи устроили общий сад",
     "voice": "af_sarah",
-    "speed": 0.86,
-    "transcript": "There was an empty lot at the end of our street for years. Last spring, a group of neighbours turned it into a garden. At first, I only went there to borrow a spade. Soon I was spending Sunday mornings planting tomatoes with people I'd never spoken to before. We don't grow enough to feed the whole street, but that's fine. The best thing about the garden is having a reason to get together.",
-    "questions": [
+    "speed": 0.84,
+    "parts": [
       {
-        "type": "Главная мысль",
-        "text": "What does the speaker value most about the garden?",
-        "options": [
-          "The vegetables it produces",
-          "The way it looks",
-          "The friendships it helps build"
-        ],
-        "answer": 2,
-        "explanation": "Говорящий ценит возможность собираться и общаться с соседями."
+        "audio": "community-garden-story-1",
+        "transcript": "At the end of Elena's street there was an empty lot. People used to leave old boxes and broken chairs there. One spring, a few neighbours got permission to turn the space into a garden. Elena heard about the plan when she saw a notice on her way to work. She was interested, but she usually spent Sundays doing jobs around her own home. That weekend, she needed a spade to move a plant in her back yard. She knew the group had borrowed some tools, so she went over to ask for one.",
+        "questions": [
+          {
+            "text": "What had people left in the empty lot before?",
+            "options": [
+              "Old boxes and broken chairs",
+              "Bikes and gardening tools",
+              "Bags of vegetables"
+            ],
+            "answer": 0,
+            "explanation": "Раньше на пустыре оставляли старые коробки и сломанные стулья."
+          },
+          {
+            "text": "Why did Elena first visit the garden?",
+            "options": [
+              "To plant tomatoes.",
+              "To borrow a spade.",
+              "To draw a plan for the site."
+            ],
+            "answer": 1,
+            "explanation": "Елене нужна была лопата для растения у себя во дворе."
+          }
+        ]
       },
       {
-        "type": "Деталь",
-        "text": "Why did the speaker first visit the garden?",
-        "options": [
-          "To borrow a tool",
-          "To plant tomatoes",
-          "To meet a friend"
-        ],
-        "answer": 0,
-        "explanation": "В первый раз говорящий пришёл одолжить лопату."
+        "audio": "community-garden-story-2",
+        "transcript": "At the lot, a neighbour called Luis showed Elena where the tools were. As she was leaving, he asked if she could help make a mark where their first vegetable bed would go. Elena said she only had ten minutes. She held one end of some string while Luis fixed the other end to a piece of wood. Then another neighbour brought tea and asked them to sit down for a moment. Elena ended up staying for nearly an hour. She still got her own plant moved that afternoon, so she decided to return the following Sunday.",
+        "questions": [
+          {
+            "text": "What did Elena help Luis with?",
+            "options": [
+              "Carrying water",
+              "Building a shed",
+              "Marking a vegetable bed"
+            ],
+            "answer": 2,
+            "explanation": "Елена придержала верёвку, которой Луис размечал первую грядку."
+          },
+          {
+            "text": "How long did Elena stay?",
+            "options": [
+              "Almost an hour",
+              "Ten minutes",
+              "Until the evening"
+            ],
+            "answer": 0,
+            "explanation": "Она собиралась уйти через десять минут, но осталась почти на час."
+          }
+        ]
       },
       {
-        "type": "Вывод",
-        "text": "How has the garden changed the speaker's Sundays?",
-        "options": [
-          "They now work from home.",
-          "They now spend time with neighbours.",
-          "They no longer go outside."
-        ],
-        "answer": 1,
-        "explanation": "По воскресеньям говорящий сажает помидоры вместе с соседями."
-      }
-    ]
-  },
-  {
-    "id": "quiet-office",
-    "level": "B2",
-    "title": "The Quiet Office",
-    "description": "Тишина по договорённости",
-    "voice": "bm_george",
-    "speed": 0.98,
-    "transcript": "When our team moved into an open-plan office, management assumed we'd collaborate more. In practice, people wore headphones and sent messages to colleagues sitting two metres away. We eventually agreed on two quiet hours each morning, with conversations moved to a separate room. Oddly enough, after that we started talking more in the afternoons. It seems people are more willing to be interrupted when they know they'll have a chance to concentrate later.",
-    "questions": [
-      {
-        "type": "Главная мысль",
-        "text": "What surprised the speaker about the trial?",
-        "options": [
-          "Productivity fell in the mornings.",
-          "People talked more after quiet hours were introduced.",
-          "The team stopped using messages."
-        ],
-        "answer": 1,
-        "explanation": "Тихие часы помогли сосредоточиться, после чего люди стали больше общаться днём."
+        "audio": "community-garden-story-3",
+        "transcript": "The next Sunday, several people brought young tomato plants to share. Elena offered to water them during the week because she walked past on her way home. By Wednesday, she had a problem. The water container at the lot was empty and the nearest tap was inside a locked building. She asked her neighbour Sam for help. Sam filled two large bottles in his kitchen and carried them over. They watered the plants together. Then they wrote their names on a piece of paper so the group knew who had looked after the beds that day.",
+        "questions": [
+          {
+            "text": "Why couldn't Elena water the plants as planned?",
+            "options": [
+              "The plants had been moved.",
+              "The water container was empty.",
+              "She had lost the key to the garden."
+            ],
+            "answer": 1,
+            "explanation": "В ёмкости не осталось воды, а ближайший кран был в закрытом здании."
+          },
+          {
+            "text": "What did Sam bring?",
+            "options": [
+              "Two bottles of water",
+              "A bucket of soil",
+              "A key to the building"
+            ],
+            "answer": 0,
+            "explanation": "Сэм наполнил две большие бутылки дома и принёс их в сад."
+          }
+        ]
       },
       {
-        "type": "Деталь",
-        "text": "What happened to conversations during quiet hours?",
-        "options": [
-          "They moved to another room.",
-          "They were limited to phone calls.",
-          "They were replaced by meetings online."
-        ],
-        "answer": 0,
-        "explanation": "Утренние разговоры перенесли в отдельную комнату."
+        "audio": "community-garden-story-4",
+        "transcript": "Over the next few weeks, the group made a watering schedule. There was still one problem. Some of the tomato plants were growing well, but others stayed small even though they received the same amount of water. Elena noticed that the weaker plants were beside a tall wall. A neighbour who had grown tomatoes before said they probably needed more sunlight. The group moved two containers away from the wall as an experiment and left one where it was. A week later, the plants they had moved were looking noticeably healthier.",
+        "questions": [
+          {
+            "text": "Where were the weaker plants growing?",
+            "options": [
+              "Next to the main path",
+              "In Sam’s back yard",
+              "Beside a tall wall"
+            ],
+            "answer": 2,
+            "explanation": "Слабые растения стояли у высокой стены."
+          },
+          {
+            "text": "What did the group try first?",
+            "options": [
+              "Watering all the plants twice a day.",
+              "Moving two containers into more sunlight.",
+              "Buying different kinds of tomato plants."
+            ],
+            "answer": 1,
+            "explanation": "Они переставили две ёмкости подальше от стены, чтобы растения получали больше света."
+          }
+        ]
       },
       {
-        "type": "Вывод",
-        "text": "What does the speaker suggest about interruptions?",
-        "options": [
-          "They are essential for creative work.",
-          "They usually happen because people are bored.",
-          "People tolerate them better when focused time is protected."
-        ],
-        "answer": 2,
-        "explanation": "Люди охотнее отвлекаются, когда знают, что смогут спокойно поработать."
-      }
-    ]
-  },
-  {
-    "id": "repair-cafe",
-    "level": "B2",
-    "title": "The Repair Café",
-    "description": "Зачем чинить старое",
-    "voice": "bf_isabella",
-    "speed": 0.97,
-    "transcript": "I expected the repair café to be about saving money, so I brought a lamp I'd already decided to replace. The volunteer didn't fix it for me. She showed me how to trace the problem and let me do the work. The replacement part cost almost nothing, but that wasn't the part I remembered. What stayed with me was how quickly I'd assumed the lamp was beyond repair. I wonder how often I make the same judgement about other things.",
-    "questions": [
-      {
-        "type": "Главная мысль",
-        "text": "What was the speaker's strongest takeaway?",
-        "options": [
-          "Repairs should always be free.",
-          "Old lamps are difficult to repair.",
-          "They had given up on the lamp too quickly."
-        ],
-        "answer": 2,
-        "explanation": "Говорящий запомнил, как быстро сделал вывод, что лампу уже не спасти."
+        "audio": "community-garden-story-5",
+        "transcript": "In late summer, Elena expected to pick enough tomatoes for everyone on the street. When she saw the first basket, she laughed. There were only nine ripe tomatoes, and twelve people had helped in the garden that month. Luis suggested taking them to the afternoon meeting and cutting them up so everyone could try a piece. Nina brought fresh bread, and Sam found a little salt in his kitchen. The tomatoes disappeared in minutes. Nobody minded the small harvest. In fact, two neighbours stayed behind for another hour, talking about what they might plant next year.",
+        "questions": [
+          {
+            "text": "Why did Luis suggest cutting up the tomatoes?",
+            "options": [
+              "There were fewer tomatoes than people.",
+              "The tomatoes were too hard to eat.",
+              "He wanted to save some for next year."
+            ],
+            "answer": 0,
+            "explanation": "Помидоров было девять, а участников двенадцать. Нарезанные помидоры могли попробовать все."
+          },
+          {
+            "text": "What did two neighbours talk about after the meeting?",
+            "options": [
+              "Who would take the basket home",
+              "How to sell tomatoes next summer",
+              "What they might plant next year"
+            ],
+            "answer": 2,
+            "explanation": "Они остались обсудить, что посадить в следующем году."
+          }
+        ]
       },
       {
-        "type": "Деталь",
-        "text": "How did the volunteer help?",
-        "options": [
-          "She gave the speaker a replacement lamp.",
-          "She guided the speaker through the repair.",
-          "She fixed the lamp while the speaker watched."
-        ],
-        "answer": 1,
-        "explanation": "Волонтёр показала, как найти проблему, и дала отремонтировать лампу самостоятельно."
-      },
-      {
-        "type": "Вывод",
-        "text": "What might the speaker do differently in the future?",
-        "options": [
-          "Check whether broken items can be repaired before replacing them.",
-          "Buy more expensive appliances.",
-          "Avoid trying unfamiliar tasks."
-        ],
-        "answer": 0,
-        "explanation": "Говорящий задумывается, как часто списывает вещи со счёта раньше времени."
-      }
-    ]
-  },
-  {
-    "id": "night-train",
-    "level": "B2",
-    "title": "Worth the Wait?",
-    "description": "Поезд вместо самолёта",
-    "voice": "af_nova",
-    "speed": 0.99,
-    "transcript": "I booked a night train because the flight seemed expensive once I'd added luggage and airport transfers. On paper the train took far longer. In practice, I arrived in the city centre just after breakfast, having spent most of the journey asleep. I wouldn't pretend the bed was comfortable, or that I'd choose it before an important meeting. Still, for a weekend away, the extra hours turned out to be a trade-off I barely noticed.",
-    "questions": [
-      {
-        "type": "Главная мысль",
-        "text": "How does the speaker feel about taking the night train again?",
-        "options": [
-          "They would consider it for a weekend trip.",
-          "They would only use it before a meeting.",
-          "They would avoid it under all circumstances."
-        ],
-        "answer": 0,
-        "explanation": "Для поездки на выходные ночной поезд оказался подходящим вариантом."
-      },
-      {
-        "type": "Деталь",
-        "text": "Which costs made the flight seem expensive?",
-        "options": [
-          "Seat selection and breakfast",
-          "Hotel and insurance",
-          "Luggage and airport transfers"
-        ],
-        "answer": 2,
-        "explanation": "При расчёте цены перелёта говорящий добавил багаж и трансфер."
-      },
-      {
-        "type": "Вывод",
-        "text": "Why did the longer journey matter less than expected?",
-        "options": [
-          "The train ran faster than scheduled.",
-          "The speaker slept through much of it.",
-          "The speaker changed plans and stayed on the train."
-        ],
-        "answer": 1,
-        "explanation": "Большая часть поездки прошла во сне, поэтому лишние часы почти не ощущались."
+        "audio": "community-garden-story-6",
+        "transcript": "In September, the group discussed whether the garden should continue. Elena said the first season had taught her something unexpected. She had met people who had lived on the same street for years without ever talking to her. The group decided to keep meeting on Sunday mornings, even during months when there was little to plant. Elena offered to make tea for the first meeting. When she got home, she looked at the spade she had finally bought for herself. She was glad she hadn't owned it that first Sunday, because borrowing one had been a very good reason to visit.",
+        "questions": [
+          {
+            "text": "What did Elena value most about the garden?",
+            "options": [
+              "Having a reason to get to know her neighbours.",
+              "Getting enough vegetables to stop shopping.",
+              "Learning to work alone outdoors."
+            ],
+            "answer": 0,
+            "explanation": "Для Елены важнее всего оказалось знакомство и общение с соседями."
+          },
+          {
+            "text": "What did the group decide to do in quieter months?",
+            "options": [
+              "Meet once a month instead.",
+              "Keep meeting on Sunday mornings.",
+              "Close the garden completely."
+            ],
+            "answer": 1,
+            "explanation": "Группа решила продолжать воскресные встречи даже в месяцы, когда мало работы с растениями."
+          }
+        ]
       }
     ]
   }

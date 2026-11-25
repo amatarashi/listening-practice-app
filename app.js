@@ -111,7 +111,6 @@ function currentPart() {
 }
 
 function loadPart() {
-  round.index = 0;
   round.answers = [];
   round.started = false;
   round.unlocked = false;
@@ -205,38 +204,14 @@ function player() {
 }
 
 function quiz() {
-  const { answers, index, lesson, unlocked } = round;
+  const { unlocked } = round;
   if (!unlocked) {
     return '<button type="button" class="button wide" disabled>К вопросам</button>' +
       '<p class="small" style="margin-top:8px">Вопросы откроются после первого прослушивания.</p>';
   }
   if (!round.started) return '<button type="button" class="button wide" data-action="start-quiz">К вопросам <span aria-hidden="true">→</span></button>';
 
-  if (lesson.parts.length > 1) return storyQuiz();
-
-  const { questions } = currentPart();
-  const question = questions[index];
-  const selected = answers[index];
-  const answered = selected !== undefined;
-  const correct = selected === question.answer;
-
-  return [
-    '<div class="section-head small"><span>Вопрос ' + (index + 1) + ' из ' + questions.length +
-      '</span><span>' + question.type + '</span></div>',
-    '<div class="segments" aria-hidden="true">',
-    ...questions.map((_, step) => '<span' + (step <= index ? ' class="filled"' : '') + '></span>'),
-    '</div><h2 tabindex="-1" class="quiz-title" lang="en">' + question.text + '</h2><div class="options">',
-    ...question.options.map((option, i) => {
-      const state = answered && i === question.answer ? " right" : answered && i === selected ? " wrong" : "";
-      return '<button type="button" class="option' + state + '" data-action="answer" data-option="' + i + '" lang="en"' +
-        (answered ? ' disabled' : '') + '><strong aria-hidden="true">' + "ABC"[i] + '</strong>' + option + '</button>';
-    }),
-    '</div>',
-    answered ? questionFeedback(question, correct) + '<div class="tight-actions">' +
-      (!correct ? '<button type="button" class="quiet" data-action="replay">Переслушать</button>' : '') +
-      '<button type="button" class="button" data-action="next">' +
-      (index + 1 === questions.length ? 'К результату' : 'Следующий вопрос') + '</button></div>' : '',
-  ].join("");
+  return answerForm();
 }
 
 function questionFeedback(question, correct) {
@@ -245,18 +220,20 @@ function questionFeedback(question, correct) {
     title + '</strong>' + question.explanation + '</div>';
 }
 
-function storyQuiz() {
+function answerForm() {
   const { questions } = currentPart();
   const { checked, answers, partIndex, lesson } = round;
+  const story = lesson.parts.length > 1;
   const finalPart = partIndex + 1 === lesson.parts.length;
   return [
-    checked ? '<p class="story-result" tabindex="-1">Верно ' + countCorrect() + ' из ' + questions.length + '</p>' :
-      '<h2 class="story-result" tabindex="-1">Вопросы к части</h2><p class="small">Ответы можно менять до проверки.</p>',
-    '<form id="story-answers">',
+    checked ? '<p class="quiz-summary" tabindex="-1">Верно ' + countCorrect() + ' из ' + questions.length + '</p>' :
+      '<h2 class="quiz-summary" tabindex="-1">' + (story ? 'Вопросы к части' : 'Вопросы к записи') +
+      '</h2><p class="small">Ответы можно менять до проверки.</p>',
+    '<form id="quiz-answers">',
     ...questions.map((question, index) => {
       const selected = answers[index];
       const correct = selected === question.answer;
-      return '<fieldset class="story-question"' + (checked ? ' disabled' : '') + '>' +
+      return '<fieldset class="quiz-question"' + (checked ? ' disabled' : '') + '>' +
         '<legend class="quiz-title" lang="en">' + question.text + '</legend><div class="options">' +
         question.options.map((option, choice) => {
           const state = checked && choice === question.answer ? ' right' : checked && choice === selected ? ' wrong' : '';
@@ -457,24 +434,7 @@ const actions = {
   "start-quiz": () => {
     if (!round.unlocked) return;
     round.started = true;
-    refreshQuiz(round.lesson.parts.length > 1 ? ".story-result" : ".quiz-title");
-  },
-  answer: button => {
-    if (round.answers[round.index] !== undefined) return;
-    const option = Number(button.dataset.option);
-    round.answers[round.index] = option;
-    const correct = option === currentPart().questions[round.index].answer;
-    telegram?.HapticFeedback?.notificationOccurred(correct ? "success" : "error");
-    refreshQuiz(".feedback");
-  },
-  next: () => {
-    if (round.answers[round.index] === undefined) return;
-    if (round.index + 1 === currentPart().questions.length) {
-      finish();
-      return;
-    }
-    round.index += 1;
-    refreshQuiz(".quiz-title");
+    refreshQuiz(".quiz-summary");
   },
   "next-part": () => {
     if (!round.checked) return;
@@ -488,13 +448,14 @@ const actions = {
 };
 
 screen.addEventListener("change", event => {
-  const form = event.target.closest("#story-answers");
-  if (form) form.querySelector('button[type="submit"]').disabled = !form.checkValidity();
+  const form = event.target.closest("#quiz-answers");
+  const submit = form?.querySelector('button[type="submit"]');
+  if (submit) submit.disabled = !form.checkValidity();
 });
 
 screen.addEventListener("submit", event => {
   const form = event.target;
-  if (form.id !== "story-answers") return;
+  if (form.id !== "quiz-answers") return;
   event.preventDefault();
   if (round.checked || !form.checkValidity()) return;
 
@@ -502,10 +463,12 @@ screen.addEventListener("submit", event => {
   round.answers = currentPart().questions.map((_, index) => Number(choices.get("answer-" + index)));
   round.checked = true;
   const correct = countCorrect();
-  round.storyScores.push(correct);
-  saveStory();
+  if (round.lesson.parts.length > 1) {
+    round.storyScores.push(correct);
+    saveStory();
+  }
   telegram?.HapticFeedback?.notificationOccurred(correct === currentPart().questions.length ? "success" : "error");
-  refreshQuiz(".story-result");
+  refreshQuiz(".quiz-summary");
 });
 
 document.addEventListener("click", event => {

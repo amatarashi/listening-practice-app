@@ -360,9 +360,12 @@ function time(seconds) {
 function updatePlayer() {
   const play = document.querySelector("#play");
   if (!play) return;
-  const playing = !audio.paused && !audio.ended;
-  play.textContent = playing ? "Ⅱ" : audio.ended ? "↻" : "▶";
-  play.setAttribute("aria-label", playing ? "Пауза" : audio.ended ? "Воспроизвести снова" : "Воспроизвести");
+  const failed = audio.error || !document.querySelector("#player-error").hidden;
+  const playing = !failed && !audio.paused && !audio.ended;
+  play.textContent = playing ? "Ⅱ" : failed || audio.ended ? "↻" : "▶";
+  const label = failed ? "Повторить загрузку" : playing ? "Пауза" :
+    audio.ended ? "Воспроизвести снова" : "Воспроизвести";
+  play.setAttribute("aria-label", label);
   document.querySelector("#elapsed").textContent = time(audio.currentTime);
   document.querySelector("#duration").textContent = time(audio.duration);
   const playedFraction = audio.currentTime / audio.duration;
@@ -373,24 +376,31 @@ function updatePlayer() {
 
 function showAudioError() {
   const message = document.querySelector("#player-error");
-  if (message) message.hidden = false;
+  if (!message) return;
+  message.hidden = false;
+  updatePlayer();
 }
 
 async function playAudio(restart = false) {
   const message = document.querySelector("#player-error");
   if (!message) return;
+  const failed = audio.error || !message.hidden;
   message.hidden = true;
-  if (audio.error) audio.load();
-  if (restart || audio.ended) audio.currentTime = 0;
-  else if (!audio.paused) {
-    audio.pause();
-    return;
-  }
 
   try {
+    if (failed) {
+      audio.load();
+    } else if (!audio.ended) {
+      // Calling play() at the end already restarts the media. A second seek can race that restart.
+      if (restart) audio.currentTime = 0;
+      else if (!audio.paused) {
+        audio.pause();
+        return;
+      }
+    }
     await audio.play();
   } catch (error) {
-    if (error.name !== "AbortError") showAudioError();
+    if (error.name !== "AbortError" && message.isConnected) showAudioError();
   }
   updatePlayer();
 }
